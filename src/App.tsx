@@ -3,7 +3,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
-import ToDo from "./ToDo";
+import ToDo, { ToDoClass } from "./ToDo";
 import ListItem from "./components/list-item";
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
   const [active, setActive] = useState <Array<ToDo>>([]);
   const [complete, setComplete] = useState <Array<ToDo>>([]);
   const [activeTab, setActiveTab] = useState <number>(0);
+  const [toggled, setToggled] = useState <boolean>(false);
 
   const changeList = (list: string) => {
     switch (list) {
@@ -48,10 +49,6 @@ function App() {
     event.preventDefault();
     setNewTodo(event.currentTarget.value);
   }
-  
-  const testHooks = () => {
-    setComplete([{id:uuidv4(), text: 'in', complete: true}]);
-  }
 
   const toggleToDoStatus = (todo: ToDo) => {
     if(todo.complete) {
@@ -65,12 +62,28 @@ function App() {
       const activeIndex = active.findIndex((element) => element.id === todo.id);
       const allIndex = all.findIndex((element) => element.id === todo.id);
       const newActive = [...active.slice(0, activeIndex), ...active.slice(activeIndex + 1)];
-      const newAll = [...all.splice(0, allIndex), ...all.slice(allIndex + 1)];
       setActive(newActive);
-      setAll(newAll);
       todo.complete = true;
+      const newAll = [...all.splice(0, allIndex), todo, ...all.slice(allIndex + 1)];
+      setAll(newAll);
       setComplete([...complete, todo]);
     }
+  }
+
+  const toggleAllToDos = () => {
+    if(toggled) {
+      const newList = all.map((element) => new ToDoClass(element.id, element.text, false));
+      setActive([...newList]);
+      setAll([...newList]);
+      setComplete([]);
+    } else {
+      const newList = all.map((element) => new ToDoClass(element.id, element.text, true));
+      setComplete([...newList]);
+      setAll([...newList]);
+      setActive([]);
+    }
+
+    setToggled(!toggled);
   }
 
   return (
@@ -78,8 +91,8 @@ function App() {
       <h1>todos</h1>
       <div className="list-stack">
         <div className="input-box">
-          <button onClick={testHooks}>
-            <BiChevronDown size={35} color="#616161"/>
+          <button onClick={toggleAllToDos}>
+            <BiChevronDown size={35} color={ toggled ? "#616161" : "#E0E0E0"}/>
           </button>
           <form
             onSubmit={(event) => handleSubmit(event)}
