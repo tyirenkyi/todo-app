@@ -57,7 +57,12 @@ function App() {
       setComplete(newComplete);
       todo.complete = false;
       setActive([...active, todo]);
-      setAll([...all, todo]);
+      const newAll = [...all];
+      newAll.forEach((element) => {
+        if(element.id === todo.id)
+          element.complete = false;
+      })
+      setAll([...newAll]);
     } else {
       const activeIndex = active.findIndex((element) => element.id === todo.id);
       const allIndex = all.findIndex((element) => element.id === todo.id);
