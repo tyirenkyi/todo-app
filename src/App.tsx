@@ -81,13 +81,22 @@ function App() {
           <div className="list-actions">
             <p className="list-count">100 items left</p>
             <div className="list-tabs">
-              <button className="list-tab" onClick={() => changeList('all')}>
+              <button 
+                className={`list-tab ${activeTab === 0 && 'active-tab'}`}
+                onClick={() => changeList('all')}
+              >
                 All
               </button>
-              <button className="list-tab" onClick={() => changeList('active')}>
+              <button 
+                className={`list-tab ${activeTab === 1 && 'active-tab'}`}
+                onClick={() => changeList('active')}
+              >
                 Active
               </button>
-              <button className="list-tab" onClick={() => changeList('complete')}>
+              <button 
+                className={`list-tab ${activeTab === 2 && 'active-tab'}`}
+                onClick={() => changeList('complete')}
+              >
                 Completed
               </button>
             </div>
