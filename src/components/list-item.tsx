@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { VscCheck, VscClose } from "react-icons/vsc";
 
 import "../styles/list-item.css";
+import ToDo from "../ToDo";
 
-function ListItem() {
-  const [complete, setComplete] = useState(false);
-
-  const toggleComplete = () => {
-    setComplete(!complete);
-  }
-
+function ListItem(props: {data: ToDo}): JSX.Element {
   return (
-    <div className={`list-item-container ${complete && "complete"}`}>
-      <button className={`checkmark ${complete && "checked"}`} onClick={toggleComplete}>
+    <div className={`list-item-container ${props.data.complete && "complete"}`}>
+      <button className={`checkmark ${props.data.complete && "checked"}`}>
         <VscCheck color="#1DE9B6" size={20} className='check'/>
       </button>
-      <p className="list-text">Buy shoes</p>
+      <p className="list-text">{props.data.text}</p>
       <button className="delete-btn">
-        <VscClose size={25} />
+        <VscClose size={24} />
       </button>
     </div>
   )

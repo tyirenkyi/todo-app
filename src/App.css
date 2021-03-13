@@ -34,6 +34,10 @@ h1 {
   padding: 10px 5px;
 }
 
+.input-box form {
+  width: 100%;
+}
+
 .input-box button {
   background-color: transparent;
   outline: none;
