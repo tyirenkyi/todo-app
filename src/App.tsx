@@ -86,6 +86,20 @@ function App() {
     setToggled(!toggled);
   }
 
+  const deleteToDo = (todo: ToDo) => {
+    if(todo.complete) {
+      const allIndex = all.findIndex((element) => element.id ===  todo.id);
+      const completeIndex = complete.findIndex((element) => element.id === todo.id);
+      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setComplete([...complete.slice(0, completeIndex), ...complete.slice(completeIndex + 1)])
+    } else {
+      const allIndex = all.findIndex((element) => element.id ===  todo.id);
+      const activeIndex = active.findIndex((element) => element.id === todo.id);
+      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setActive([...active.splice(0, activeIndex), ...active.slice(activeIndex + 1)]);
+    }
+  }
+
   return (
     <div className="App">
       <h1>todos</h1>
@@ -111,7 +125,7 @@ function App() {
         </div>
         <div className="list-content">
           {[all, active, complete][activeTab].map((item, index) => (
-            <ListItem data={item} key={index} toggleStatus={toggleToDoStatus} />
+            <ListItem data={item} key={index} toggleStatus={toggleToDoStatus} deleteToDo={deleteToDo}/>
           ))}
           <div className="list-actions">
             <p className="list-count">100 items left</p>
