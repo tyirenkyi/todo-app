@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,6 +13,15 @@ function App() {
   const [complete, setComplete] = useState <Array<ToDo>>([]);
   const [activeTab, setActiveTab] = useState <number>(0);
   const [toggled, setToggled] = useState <boolean>(false);
+
+  const sortToDos = useCallback(() => {
+    setActive(all.filter((element) => element.complete === false));
+    setComplete(all.filter((element) => element.complete === true));
+  }, [all])
+
+  useEffect(() => {
+    sortToDos();
+  }, [all, sortToDos])
 
   const changeList = (list: string) => {
     switch (list) {
@@ -40,10 +49,8 @@ function App() {
   }
 
   const addToDo = (todo: ToDo) => {
-    setActive([...active, todo]);
     setAll([...all, todo]);
   }
-
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -52,58 +59,43 @@ function App() {
 
   const toggleToDoStatus = (todo: ToDo) => {
     if(todo.complete) {
-      const index = complete.findIndex((element) => element.id === todo.id);
-      const newComplete = [...complete.slice(0, index), ...complete.slice(index + 1)];
-      setComplete(newComplete);
-      todo.complete = false;
-      setActive([...active, todo]);
-      setAll([...all, todo]);
+      const newAll = [...all];
+      newAll.forEach((element) => {
+        if(element.id === todo.id)
+          element.complete = false;
+      })
+      setAll([...newAll]);
     } else {
-      const activeIndex = active.findIndex((element) => element.id === todo.id);
       const allIndex = all.findIndex((element) => element.id === todo.id);
-      const newActive = [...active.slice(0, activeIndex), ...active.slice(activeIndex + 1)];
-      setActive(newActive);
       todo.complete = true;
-      const newAll = [...all.splice(0, allIndex), todo, ...all.slice(allIndex + 1)];
-      setAll(newAll);
-      setComplete([...complete, todo]);
+      setAll([...all.slice(0, allIndex), todo, ...all.slice(allIndex + 1)]);
     }
   }
 
   const toggleAllToDos = () => {
     if(toggled) {
       const newList = all.map((element) => new ToDoClass(element.id, element.text, false));
-      setActive([...newList]);
       setAll([...newList]);
-      setComplete([]);
     } else {
       const newList = all.map((element) => new ToDoClass(element.id, element.text, true));
-      setComplete([...newList]);
       setAll([...newList]);
-      setActive([]);
     }
-
     setToggled(!toggled);
   }
 
   const deleteToDo = (todo: ToDo) => {
     if(todo.complete) {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      const completeIndex = complete.findIndex((element) => element.id === todo.id);
       setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
-      setComplete([...complete.slice(0, completeIndex), ...complete.slice(completeIndex + 1)])
     } else {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      const activeIndex = active.findIndex((element) => element.id === todo.id);
       setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
-      setActive([...active.splice(0, activeIndex), ...active.slice(activeIndex + 1)]);
     }
   }
 
   const deleteCompleted = () => {
     const newList = [...all].filter((element) => element.complete === false);
     setAll([...newList]);
-    setComplete([]);
   }
 
   return (
