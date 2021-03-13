@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
+import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
 import ToDo from "./ToDo";
@@ -34,7 +35,7 @@ function App() {
       return;
     event.currentTarget.reset();
     setNewTodo("");
-    addToDo({text: newTodo, complete: false});
+    addToDo({id: uuidv4(), text: newTodo, complete: false});
   }
 
   const addToDo = (todo: ToDo) => {
@@ -42,13 +43,34 @@ function App() {
     setAll([...all, todo]);
   }
 
+
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
     setNewTodo(event.currentTarget.value);
   }
   
   const testHooks = () => {
-    setComplete([{text: 'in', complete: true}]);
+    setComplete([{id:uuidv4(), text: 'in', complete: true}]);
+  }
+
+  const toggleToDoStatus = (todo: ToDo) => {
+    if(todo.complete) {
+      const index = complete.findIndex((element) => element.id === todo.id);
+      const newComplete = [...complete.slice(0, index), ...complete.slice(index + 1)];
+      setComplete(newComplete);
+      todo.complete = false;
+      setActive([...active, todo]);
+      setAll([...all, todo]);
+    } else {
+      const activeIndex = active.findIndex((element) => element.id === todo.id);
+      const allIndex = all.findIndex((element) => element.id === todo.id);
+      const newActive = [...active.slice(0, activeIndex), ...active.slice(activeIndex + 1)];
+      const newAll = [...all.splice(0, allIndex), ...all.slice(allIndex + 1)];
+      setActive(newActive);
+      setAll(newAll);
+      todo.complete = true;
+      setComplete([...complete, todo]);
+    }
   }
 
   return (
@@ -76,7 +98,7 @@ function App() {
         </div>
         <div className="list-content">
           {[all, active, complete][activeTab].map((item, index) => (
-            <ListItem data={item} key={index} />
+            <ListItem data={item} key={index} toggleStatus={toggleToDoStatus} />
           ))}
           <div className="list-actions">
             <p className="list-count">100 items left</p>
