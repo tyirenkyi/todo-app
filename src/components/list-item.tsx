@@ -4,7 +4,7 @@ import { VscCheck, VscClose } from "react-icons/vsc";
 import "../styles/list-item.css";
 import ToDo from "../ToDo";
 
-function ListItem(props: {data: ToDo, toggleStatus: Function}): JSX.Element {
+function ListItem(props: {data: ToDo, toggleStatus: Function, deleteToDo: Function}): JSX.Element {
   return (
     <div className={`list-item-container ${props.data.complete && "complete"}`}>
       <button 
@@ -14,7 +14,10 @@ function ListItem(props: {data: ToDo, toggleStatus: Function}): JSX.Element {
         <VscCheck color="#1DE9B6" size={20} className='check'/>
       </button>
       <p className="list-text">{props.data.text}</p>
-      <button className="delete-btn">
+      <button 
+        className="delete-btn"
+        onClick={() => props.deleteToDo(props.data)}
+      >
         <VscClose size={24} />
       </button>
     </div>
