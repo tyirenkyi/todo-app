@@ -1,0 +1,67 @@
+.list-item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 10px;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.list-item-container .delete-btn {
+  display: none;
+}
+
+.list-item-container:hover .delete-btn {
+  display: block;
+}
+
+.checkmark {
+  outline: none;
+  border: 1px solid #BDBDBD;
+  border-radius: 100px;
+  height: 29px;
+  width: 29px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.checkmark .check {
+  display: none;
+}
+
+.checked {
+  border-color: #1DE9B6;
+}
+
+.checked .check {
+  display: block;
+}
+
+.list-text {
+  font-weight: 200;
+  font-size: 24px;
+  margin: 0;
+  color: #4d4d4d;
+  width: 85%;
+  text-align: left;
+  text-decoration: none;
+  transition: color 0.5s, text-decoration .5s;
+}
+
+.complete p{
+  text-decoration: line-through;
+  color: #d9d9d9;
+}
+
+.delete-btn {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: rgba(175, 47, 47, 0.4);
+}
+
+.delete-btn:hover {
+  color: rgba(175, 47, 47, 0.7);
+}
