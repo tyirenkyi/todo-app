@@ -26,12 +26,18 @@ function App() {
     }
   }
 
+  const testHooks = () => {
+    setAll([1]);
+    setActive([1]);
+    setComplete([1]);
+  }
+
   return (
     <div className="App">
       <h1>todos</h1>
       <div className="list-stack">
         <div className="input-box">
-          <button>
+          <button onClick={testHooks}>
             <BiChevronDown size={35} color="#616161"/>
           </button>
           <input 
