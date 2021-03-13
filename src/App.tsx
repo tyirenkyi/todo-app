@@ -100,6 +100,12 @@ function App() {
     }
   }
 
+  const deleteCompleted = () => {
+    const newList = [...all].filter((element) => element.complete === false);
+    setAll([...newList]);
+    setComplete([]);
+  }
+
   return (
     <div className="App">
       <h1>todos</h1>
@@ -149,7 +155,7 @@ function App() {
                 Completed
               </button>
             </div>
-            <p className="clear-btn">Clear completed</p>
+            <p className="clear-btn" onClick={deleteCompleted}>Clear completed</p>
           </div>
         </div>
       </div>
