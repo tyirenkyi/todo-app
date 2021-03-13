@@ -34,6 +34,10 @@ h1 {
   padding: 10px 5px;
 }
 
+.input-box form {
+  width: 100%;
+}
+
 .input-box button {
   background-color: transparent;
   outline: none;
@@ -113,7 +117,7 @@ h1 {
   border: 1px solid rgba(175, 47, 47, 0.1);
 }
 
-.list-tab:focus {
+.active-tab {
   border: 1px solid rgba(175, 47, 47, 0.19)
 }
 
