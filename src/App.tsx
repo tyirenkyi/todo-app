@@ -135,7 +135,7 @@ function App() {
   }
 
   const pluralize = (value: number, text: string) => {
-    if(value > 1)
+    if(value !== 1)
       return `${text}s`;
     else
       return text;
@@ -177,7 +177,7 @@ function App() {
             />
           ))}
           <div className="list-actions">
-            <p className="list-count">{complete.length} {pluralize(complete.length, 'item')} left</p>
+            <p className="list-count">{active.length} {pluralize(active.length, 'item')} left</p>
             <div className="list-tabs">
               <button 
                 className={`list-tab ${activeTab === 0 && 'active-tab'}`}
