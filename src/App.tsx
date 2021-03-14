@@ -13,6 +13,7 @@ function App() {
   const [complete, setComplete] = useState <Array<ToDo>>([]);
   const [activeTab, setActiveTab] = useState <number>(0);
   const [toggled, setToggled] = useState <boolean>(false);
+  const [editing, setEditing] = useState <boolean>(false);
 
   const sortToDos = useCallback(() => {
     setActive(all.filter((element) => element.complete === false));
@@ -86,15 +87,28 @@ function App() {
   const deleteToDo = (todo: ToDo) => {
     if(todo.complete) {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setAll([...all.slice(0, allIndex), ...all.slice(allIndex + 1)]);
     } else {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setAll([...all.slice(0, allIndex), ...all.slice(allIndex + 1)]);
     }
   }
 
   const deleteCompleted = () => {
     const newList = [...all].filter((element) => element.complete === false);
+    setAll([...newList]);
+  }
+
+  const toggleEditing = () => {
+    setEditing(!editing);
+  }
+
+  const submitEdit = (todo: ToDo) => {
+    const newList = [...all]
+    newList.forEach((element) => {
+      if(element.id === todo.id)
+        element.text = todo.text
+    })
     setAll([...newList]);
   }
 
@@ -123,7 +137,15 @@ function App() {
         </div>
         <div className="list-content">
           {[all, active, complete][activeTab].map((item, index) => (
-            <ListItem data={item} key={index} toggleStatus={toggleToDoStatus} deleteToDo={deleteToDo}/>
+            <ListItem 
+              data={item} 
+              key={index} 
+              toggleStatus={toggleToDoStatus} 
+              deleteToDo={deleteToDo}
+              editing={editing}
+              submitEdit={submitEdit}
+              toggleEditing={toggleEditing}
+            />
           ))}
           <div className="list-actions">
             <p className="list-count">100 items left</p>
