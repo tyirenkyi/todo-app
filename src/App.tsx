@@ -16,8 +16,13 @@ function App() {
   const [editing, setEditing] = useState <boolean>(false);
 
   const sortToDos = useCallback(() => {
-    setActive(all.filter((element) => element.complete === false));
+    const activeList = all.filter((element) => element.complete === false)
+    setActive(activeList);
     setComplete(all.filter((element) => element.complete === true));
+    if(activeList.length === 0)
+      setToggled(true);
+    else
+      setToggled(false);
   }, [all])
 
   const cacheToDos = useCallback(() => {
@@ -128,6 +133,13 @@ function App() {
     })
     setAll([...newList]);
   }
+
+  const pluralize = (value: number, text: string) => {
+    if(value !== 1)
+      return `${text}s`;
+    else
+      return text;
+  }
   
   return (
     <div className="App">
@@ -165,7 +177,7 @@ function App() {
             />
           ))}
           <div className="list-actions">
-            <p className="list-count">100 items left</p>
+            <p className="list-count">{active.length} {pluralize(active.length, 'item')} left</p>
             <div className="list-tabs">
               <button 
                 className={`list-tab ${activeTab === 0 && 'active-tab'}`}
@@ -189,6 +201,10 @@ function App() {
             <p className="clear-btn" onClick={deleteCompleted}>Clear completed</p>
           </div>
         </div>
+      </div>
+      <div className='small-text'>
+        <p>Double-click to edit a todo</p>
+        <p>Created by <span>timothy yirenkyi</span></p>
       </div>
     </div>
   );
