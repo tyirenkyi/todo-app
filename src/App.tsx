@@ -20,9 +20,26 @@ function App() {
     setComplete(all.filter((element) => element.complete === true));
   }, [all])
 
+  const cacheToDos = useCallback(() => {
+    localStorage.setItem("todos", JSON.stringify(all));
+  }, [all])
+
+  const getCachedTodos = useCallback(() => {
+    let todos = localStorage.getItem("todos") || "";
+    let todoList = Array<ToDo>();
+    todoList = JSON.parse(todos);
+    if(todos !== "")
+      setAll([...todoList]);
+  }, [])
+
+  useEffect(() => {
+    getCachedTodos();
+  }, [getCachedTodos])
+
   useEffect(() => {
     sortToDos();
-  }, [all, sortToDos])
+    cacheToDos();
+  }, [all, sortToDos, cacheToDos])
 
   const changeList = (list: string) => {
     switch (list) {
@@ -111,7 +128,7 @@ function App() {
     })
     setAll([...newList]);
   }
-
+  
   return (
     <div className="App">
       <h1>todos</h1>
