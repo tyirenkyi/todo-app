@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { VscCheck, VscClose } from "react-icons/vsc";
 
 import "../styles/list-item.css";
-import ToDo from "../ToDo";
+import ToDo, { ToDoClass } from "../ToDo";
 
 function ListItem(props: {
     data: ToDo, 
@@ -17,6 +17,8 @@ function ListItem(props: {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    props.toggleEditing();
+    props.submitEdit(new ToDoClass(props.data.id, todo, props.data.complete));
   }
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {

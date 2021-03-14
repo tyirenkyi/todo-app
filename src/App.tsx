@@ -87,10 +87,10 @@ function App() {
   const deleteToDo = (todo: ToDo) => {
     if(todo.complete) {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setAll([...all.slice(0, allIndex), ...all.slice(allIndex + 1)]);
     } else {
       const allIndex = all.findIndex((element) => element.id ===  todo.id);
-      setAll([...all.splice(0, allIndex), ...all.slice(allIndex + 1)]);
+      setAll([...all.slice(0, allIndex), ...all.slice(allIndex + 1)]);
     }
   }
 
@@ -103,8 +103,13 @@ function App() {
     setEditing(!editing);
   }
 
-  const submitEdit = () => {
-
+  const submitEdit = (todo: ToDo) => {
+    const newList = [...all]
+    newList.forEach((element) => {
+      if(element.id === todo.id)
+        element.text = todo.text
+    })
+    setAll([...newList]);
   }
 
   return (
