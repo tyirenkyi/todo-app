@@ -24,6 +24,18 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(all));
   }, [all])
 
+  const getCachedTodos = useCallback(() => {
+    let todos = localStorage.getItem("todos") || "";
+    let todoList = Array<ToDo>();
+    todoList = JSON.parse(todos);
+    if(todos !== "")
+      setAll([...todoList]);
+  }, [])
+
+  useEffect(() => {
+    getCachedTodos();
+  }, [getCachedTodos])
+
   useEffect(() => {
     sortToDos();
     cacheToDos();
@@ -116,7 +128,6 @@ function App() {
     })
     setAll([...newList]);
   }
-
   
   return (
     <div className="App">
