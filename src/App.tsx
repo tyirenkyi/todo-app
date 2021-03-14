@@ -26,10 +26,10 @@ function App() {
 
   const getCachedTodos = useCallback(() => {
     let todos = localStorage.getItem("todos") || "";
-    let todoList = Array<ToDo>();
-    todoList = JSON.parse(todos);
-    if(todos !== "")
-      setAll([...todoList]);
+    if(todos === "")
+      return;
+    const todoList = JSON.parse(todos);
+    setAll([...todoList]);
   }, [])
 
   useEffect(() => {
