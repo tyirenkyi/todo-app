@@ -16,8 +16,13 @@ function App() {
   const [editing, setEditing] = useState <boolean>(false);
 
   const sortToDos = useCallback(() => {
-    setActive(all.filter((element) => element.complete === false));
+    const activeList = all.filter((element) => element.complete === false)
+    setActive(activeList);
     setComplete(all.filter((element) => element.complete === true));
+    if(activeList.length === 0)
+      setToggled(true);
+    else
+      setToggled(false);
   }, [all])
 
   const cacheToDos = useCallback(() => {
