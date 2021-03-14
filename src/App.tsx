@@ -13,6 +13,7 @@ function App() {
   const [complete, setComplete] = useState <Array<ToDo>>([]);
   const [activeTab, setActiveTab] = useState <number>(0);
   const [toggled, setToggled] = useState <boolean>(false);
+  const [editing, setEditing] = useState <boolean>(false);
 
   const sortToDos = useCallback(() => {
     setActive(all.filter((element) => element.complete === false));
@@ -98,6 +99,14 @@ function App() {
     setAll([...newList]);
   }
 
+  const toggleEditing = () => {
+    setEditing(!editing);
+  }
+
+  const submitEdit = () => {
+
+  }
+
   return (
     <div className="App">
       <h1>todos</h1>
@@ -123,7 +132,15 @@ function App() {
         </div>
         <div className="list-content">
           {[all, active, complete][activeTab].map((item, index) => (
-            <ListItem data={item} key={index} toggleStatus={toggleToDoStatus} deleteToDo={deleteToDo}/>
+            <ListItem 
+              data={item} 
+              key={index} 
+              toggleStatus={toggleToDoStatus} 
+              deleteToDo={deleteToDo}
+              editing={editing}
+              submitEdit={submitEdit}
+              toggleEditing={toggleEditing}
+            />
           ))}
           <div className="list-actions">
             <p className="list-count">100 items left</p>
