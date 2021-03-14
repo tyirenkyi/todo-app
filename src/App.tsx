@@ -20,9 +20,14 @@ function App() {
     setComplete(all.filter((element) => element.complete === true));
   }, [all])
 
+  const cacheToDos = useCallback(() => {
+    localStorage.setItem("todos", JSON.stringify(all));
+  }, [all])
+
   useEffect(() => {
     sortToDos();
-  }, [all, sortToDos])
+    cacheToDos();
+  }, [all, sortToDos, cacheToDos])
 
   const changeList = (list: string) => {
     switch (list) {
@@ -112,6 +117,7 @@ function App() {
     setAll([...newList]);
   }
 
+  
   return (
     <div className="App">
       <h1>todos</h1>
